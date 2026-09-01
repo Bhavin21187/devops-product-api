@@ -8,6 +8,10 @@ on:
     branches:
       - main
 
+permissions:
+  contents: read
+  packages: write
+
 jobs:
   build-and-test:
 
@@ -32,5 +36,21 @@ jobs:
       - name: Run tests
         run: dotnet test DevOpsProductApi.sln --configuration Release --no-build
 
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Build Docker image
-        run: docker build -t devops-product-api:${{ github.sha }} .
+        run: |
+          docker build \
+            -t ghcr.io/${{ github.repository_owner }}/devops-product-api:${{ github.sha }} \
+            -t ghcr.io/${{ github.repository_owner }}/devops-product-api:latest \
+            .
+
+      - name: Push Docker image to GHCR
+        run: |
+          docker push ghcr.io/${{ github.repository_owner }}/devops-product-api:${{ github.sha }}
+          docker push ghcr.io/${{ github.repository_owner }}/devops-product-api:latest
