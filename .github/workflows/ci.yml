@@ -31,3 +31,6 @@ jobs:
 
       - name: Run tests
         run: dotnet test DevOpsProductApi.sln --configuration Release --no-build
+
+      - name: Build Docker image
+        run: docker build -t devops-product-api:${{ github.sha }} .
