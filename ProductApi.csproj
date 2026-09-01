@@ -11,4 +11,12 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
   </ItemGroup>
 
+  <!-- Prevent the main API project from compiling test files -->
+  <ItemGroup>
+    <Compile Remove="ProductApi.Tests\**" />
+    <Content Remove="ProductApi.Tests\**" />
+    <None Remove="ProductApi.Tests\**" />
+  </ItemGroup>
+
 </Project>
+
