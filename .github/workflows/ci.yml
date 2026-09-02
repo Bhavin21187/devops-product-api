@@ -65,14 +65,29 @@ jobs:
           docker push ghcr.io/bhavin21187/devops-product-api:${{ github.sha }}
           docker push ghcr.io/bhavin21187/devops-product-api:latest
 
-  production-approval:
-    name: Production Approval
+   production-deployment:
+    name: Deploy to Production
     needs: build-and-test
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     environment:
       name: production
 
     steps:
-      - name: Production deployment approved
-        run: echo "Production deployment approved"
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      - name: Verify Kubernetes access
+        run: kubectl get nodes
+
+      - name: Deploy production
+        run: kubectl apply -f k8s/production-deployment.yaml
+
+      - name: Apply production service
+        run: kubectl apply -f k8s/production-service.yaml
+
+      - name: Wait for rollout
+        run: kubectl rollout status deployment/product-api-production -n production
+
+      - name: Verify production pods
+        run: kubectl get pods -n production
