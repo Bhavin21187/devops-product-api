@@ -50,6 +50,16 @@ jobs:
             -t ghcr.io/bhavin21187/devops-product-api:latest \
             .
 
+      - name: Scan Docker image with Trivy
+        uses: aquasecurity/trivy-action@0.33.1
+        with:
+          image-ref: ghcr.io/bhavin21187/devops-product-api:${{ github.sha }}
+          format: table
+          exit-code: '1'
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH'
+
       - name: Push Docker image to GHCR
         run: |
           docker push ghcr.io/bhavin21187/devops-product-api:${{ github.sha }}
