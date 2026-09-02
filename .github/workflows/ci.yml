@@ -14,11 +14,9 @@ permissions:
 
 jobs:
   build-and-test:
-
     runs-on: ubuntu-latest
 
     steps:
-
       - name: Checkout source code
         uses: actions/checkout@v4
 
@@ -65,7 +63,7 @@ jobs:
           docker push ghcr.io/bhavin21187/devops-product-api:${{ github.sha }}
           docker push ghcr.io/bhavin21187/devops-product-api:latest
 
-   production-deployment:
+  production-deployment:
     name: Deploy to Production
     needs: build-and-test
     runs-on: self-hosted
