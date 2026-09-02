@@ -64,3 +64,15 @@ jobs:
         run: |
           docker push ghcr.io/bhavin21187/devops-product-api:${{ github.sha }}
           docker push ghcr.io/bhavin21187/devops-product-api:latest
+
+  production-approval:
+    name: Production Approval
+    needs: build-and-test
+    runs-on: ubuntu-latest
+
+    environment:
+      name: production
+
+    steps:
+      - name: Production deployment approved
+        run: echo "Production deployment approved"
