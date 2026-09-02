@@ -31,9 +31,13 @@ public class ProductsController : ControllerBase
 
     [HttpGet]
     public IActionResult GetProducts()
+   {
+        return Ok(new
     {
-        return Ok(Products);
-    }
+        version = "v2",
+        products = Products
+    });
+   }
 
     [HttpGet("{id}")]
     public IActionResult GetProduct(int id)

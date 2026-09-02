@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: product-api-staging
+  namespace: staging
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: product-api-staging
+  template:
+    metadata:
+      labels:
+        app: product-api-staging
+    spec:
+      containers:
+        - name: product-api
+          image: ghcr.io/bhavin21187/devops-product-api:v2
+          ports:
+            - containerPort: 8080
